@@ -1,51 +1,21 @@
-import 'dart:io';
-import 'package:consumernetworks/opensuppliersWebview.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class OpenWebView extends StatefulWidget {
-  const OpenWebView({super.key});
+class OpenSupplierWebView extends StatefulWidget {
+  String url;
+  OpenSupplierWebView({required this.url});
 
   @override
-  State<OpenWebView> createState() => _OpenWebViewState();
+  State<OpenSupplierWebView> createState() => _OpenSupplierWebViewState();
 }
 
-class _OpenWebViewState extends State<OpenWebView> {
+class _OpenSupplierWebViewState extends State<OpenSupplierWebView> {
   InAppWebViewController? webViewController;
 
   bool isLoading = false;
   var lastPage = false;
   var newUrl = '';
-  DateTime? currentBackPressTime;
-
-  Future<bool> exitApp() async {
-    // showTimerController.pauseAudioOnBack();
-    DateTime now = DateTime.now();
-    if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
-      currentBackPressTime = now;
-      EasyLoading.showToast(
-        'Press again to exit app',
-        toastPosition: EasyLoadingToastPosition.bottom,
-      );
-      return Future.value(false);
-    }
-    exit(0);
-  }
-
-  @override
-  void initState() {
-    // SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-    //   Future.delayed(Duration(seconds: 5), () {
-    //     showPopUp();
-    //   });
-    // });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +28,7 @@ class _OpenWebViewState extends State<OpenWebView> {
         if (lastPage) {
           webViewController!.goBack();
         } else {
-          exitApp();
+          Navigator.pop(context);
         }
         setState(() {});
       },
@@ -71,11 +41,8 @@ class _OpenWebViewState extends State<OpenWebView> {
                 width: double.infinity,
                 // padding: const EdgeInsets.all(20),
                 child: InAppWebView(
-                  initialUrlRequest: URLRequest(
-                      url: WebUri.uri(
-                          Uri.parse('https://www.consumersnetworks.com/mobile'
-                              // 'https://www.consumersnetworks.com/'
-                              ))),
+                  initialUrlRequest:
+                      URLRequest(url: WebUri.uri(Uri.parse(widget.url))),
 
                   initialOptions: InAppWebViewGroupOptions(
                     crossPlatform: InAppWebViewOptions(
@@ -196,9 +163,8 @@ class _OpenWebViewState extends State<OpenWebView> {
                     return false;
                   },
                   onProgressChanged: (controller, progress) {
-                    if (progress >= 70) {
+                    if (progress == 100) {
                       isLoading = false;
-                      print("isLoading....$isLoading");
                     } else {
                       isLoading = true;
                     }
@@ -275,131 +241,5 @@ class _OpenWebViewState extends State<OpenWebView> {
     } else {
       return NavigationActionPolicy.ALLOW;
     }
-  }
-
-  showPopUp() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Theme(
-            data:
-                Theme.of(context).copyWith(dialogBackgroundColor: Colors.white),
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              // backgroundColor: Colors.white,
-              content: Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Align(
-                        alignment: Alignment.centerRight,
-                        child: Icon(Icons.close),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    customBtn('assets/logo/shopping-cart.gif', 'Purchase', () {
-                      Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => OpenSupplierWebView(
-                                      url:
-                                          'https://www.consumersnetworks.com/products?page=1')))
-                          .then((value) {
-                        SchedulerBinding.instance
-                            .addPostFrameCallback((timeStamp) {
-                          showPopUp();
-                        });
-                      });
-                    }),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    customBtn('assets/logo/real-estate-agent.gif',
-                        'Become a suppliers', () {
-                      Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => OpenSupplierWebView(
-                                      url:
-                                          'https://www.consumersnetworks.com/shop/apply')))
-                          .then((value) {
-                        SchedulerBinding.instance
-                            .addPostFrameCallback((timeStamp) {
-                          showPopUp();
-                        });
-                      });
-                    }),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    customBtn('assets/logo/society.gif', 'Become a members',
-                        () {
-                      Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => OpenSupplierWebView(
-                                      url:
-                                          'https://www.consumersnetworks.com/customer/auth/sign-up')))
-                          .then((value) {
-                        SchedulerBinding.instance
-                            .addPostFrameCallback((timeStamp) {
-                          showPopUp();
-                        });
-                      });
-                    }),
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
-  }
-
-  customBtn(String img, String title, Function() onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-          width: double.infinity,
-          height: 50,
-          decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color(0xff1b7fed),
-              ),
-              borderRadius: BorderRadius.circular(5)),
-          padding: const EdgeInsets.only(left: 12, right: 10),
-          alignment: Alignment.center,
-          child: Row(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                img,
-                height: 30,
-                width: 30,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Flexible(
-                child: Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                      color: Color(0xff1b7fed),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
-                ),
-              ),
-            ],
-          )),
-    );
   }
 }

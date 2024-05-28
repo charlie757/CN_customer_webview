@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   callInitFunction() async {
-    Future.delayed(Duration(seconds: 3), () async {
+    Future.delayed(Duration(seconds: 1), () async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       if (prefs.getBool('isIntro') != null &&
           prefs.getBool('isIntro') == true) {
