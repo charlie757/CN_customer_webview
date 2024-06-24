@@ -1,4 +1,4 @@
-package com.example.consumernetworks
+package com.app.consumernetwork
 
 import io.flutter.embedding.android.FlutterActivity
 
