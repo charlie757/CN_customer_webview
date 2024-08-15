@@ -76,9 +76,9 @@ class _OpenWebViewState extends State<OpenWebView> {
                           Uri.parse('https://www.consumersnetworks.com/mobile'
                               // 'https://www.consumersnetworks.com/'
                               ))),
-
                   initialOptions: InAppWebViewGroupOptions(
                     crossPlatform: InAppWebViewOptions(
+
                       javaScriptCanOpenWindowsAutomatically: true,
                       transparentBackground: true,
                       useShouldOverrideUrlLoading: true,
@@ -102,9 +102,10 @@ class _OpenWebViewState extends State<OpenWebView> {
                       domStorageEnabled: true,
                     ),
                     ios: IOSInAppWebViewOptions(
-                        allowsBackForwardNavigationGestures: true,
-                        alwaysBounceVertical: true,
-                        useOnNavigationResponse: true),
+                        // allowsBackForwardNavigationGestures: true,
+                        // alwaysBounceVertical: true,
+                        // useOnNavigationResponse: true
+                    ),
                   ),
                   onReceivedServerTrustAuthRequest:
                       (controller, challenge) async {
@@ -210,7 +211,7 @@ class _OpenWebViewState extends State<OpenWebView> {
                 )),
             isLoading
                 ? const Center(child: CircularProgressIndicator())
-                : const SizedBox(),
+                : const SizedBox(height:0,width:0),
           ],
         ),
       )),
