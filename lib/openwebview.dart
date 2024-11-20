@@ -49,7 +49,7 @@ class _OpenWebViewState extends State<OpenWebView> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
+    return  PopScope(
       canPop: false,
       // canPop: true,
       onPopInvoked: (val) async {
@@ -222,7 +222,21 @@ class _OpenWebViewState extends State<OpenWebView> {
       InAppWebViewController controller, NavigationAction action) async {
     debugPrint("url string ${action.request.url.toString()}");
     var url = action.request.url.toString();
-    if (url.contains('.pdf')) {
+    if(url.contains('com.consumersnetwork.delivery')){
+      String newUrl = 'https://play.google.com/store/apps/details?id=com.consumersnetwork.delivery';
+      await canLaunchUrl(Uri.parse(newUrl))
+          ? await launchUrl(Uri.parse(newUrl))
+          : throw 'Could not launch $url';
+     return NavigationActionPolicy.CANCEL; 
+    }
+    else if(url.contains('com.consumersNetwork.mydriverapp')){
+ String newUrl = 'https://play.google.com/store/apps/details?id=com.consumersNetwork.mydriverapp';
+      await canLaunchUrl(Uri.parse(newUrl))
+          ? await launchUrl(Uri.parse(newUrl))
+          : throw 'Could not launch $url';
+     return NavigationActionPolicy.CANCEL; 
+    }
+    else if (url.contains('.pdf')) {
       debugPrint("url pdf${url}");
       setState(() {
         newUrl = url;
