@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:external_app_launcher/external_app_launcher.dart';
 
 class OpenWebView extends StatefulWidget {
   const OpenWebView({super.key});
@@ -47,9 +48,29 @@ class _OpenWebViewState extends State<OpenWebView> {
     super.initState();
   }
 
+  checkDeliveryApp() async {
+    await LaunchApp.openApp(
+      androidPackageName: 'com.consumersnetwork.delivery',
+      iosUrlScheme: 'cn-delivery://',
+      appStoreLink:
+          'https://apps.apple.com/us/app/cn-delivery/id6535697053',
+      // openStore: false
+    );
+  }
+
+  checkMyDriverApp() async {
+    await LaunchApp.openApp(
+      androidPackageName: 'com.consumersNetwork.mydriverapp',
+      iosUrlScheme: 'cn-delivery://',
+      appStoreLink:
+          'https://apps.apple.com/us/app/cn-delivery/id6535697053',
+      // openStore: false
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return  PopScope(
+    return PopScope(
       canPop: false,
       // canPop: true,
       onPopInvoked: (val) async {
@@ -78,7 +99,6 @@ class _OpenWebViewState extends State<OpenWebView> {
                               ))),
                   initialOptions: InAppWebViewGroupOptions(
                     crossPlatform: InAppWebViewOptions(
-
                       javaScriptCanOpenWindowsAutomatically: true,
                       transparentBackground: true,
                       useShouldOverrideUrlLoading: true,
@@ -105,7 +125,7 @@ class _OpenWebViewState extends State<OpenWebView> {
                         // allowsBackForwardNavigationGestures: true,
                         // alwaysBounceVertical: true,
                         // useOnNavigationResponse: true
-                    ),
+                        ),
                   ),
                   onReceivedServerTrustAuthRequest:
                       (controller, challenge) async {
@@ -211,7 +231,7 @@ class _OpenWebViewState extends State<OpenWebView> {
                 )),
             isLoading
                 ? const Center(child: CircularProgressIndicator())
-                : const SizedBox(height:0,width:0),
+                : const SizedBox(height: 0, width: 0),
           ],
         ),
       )),
@@ -222,21 +242,23 @@ class _OpenWebViewState extends State<OpenWebView> {
       InAppWebViewController controller, NavigationAction action) async {
     debugPrint("url string ${action.request.url.toString()}");
     var url = action.request.url.toString();
-    if(url.contains('com.consumersnetwork.delivery')){
-      String newUrl = 'https://play.google.com/store/apps/details?id=com.consumersnetwork.delivery';
-      await canLaunchUrl(Uri.parse(newUrl))
-          ? await launchUrl(Uri.parse(newUrl))
-          : throw 'Could not launch $url';
-     return NavigationActionPolicy.CANCEL; 
-    }
-    else if(url.contains('com.consumersNetwork.mydriverapp')){
- String newUrl = 'https://play.google.com/store/apps/details?id=com.consumersNetwork.mydriverapp';
-      await canLaunchUrl(Uri.parse(newUrl))
-          ? await launchUrl(Uri.parse(newUrl))
-          : throw 'Could not launch $url';
-     return NavigationActionPolicy.CANCEL; 
-    }
-    else if (url.contains('.pdf')) {
+    if (url.contains('com.consumersnetwork.delivery')) {
+      checkDeliveryApp();
+      // String newUrl =
+      //     'https://play.google.com/store/apps/details?id=com.consumersnetwork.delivery';
+      // await canLaunchUrl(Uri.parse(newUrl))
+      //     ? await launchUrl(Uri.parse(newUrl))
+      //     : throw 'Could not launch $url';
+      return NavigationActionPolicy.CANCEL;
+    } else if (url.contains('com.consumersNetwork.mydriverapp')) {
+      checkMyDriverApp();
+      // String newUrl =
+      //     'https://play.google.com/store/apps/details?id=com.consumersNetwork.mydriverapp';
+      // await canLaunchUrl(Uri.parse(newUrl))
+      //     ? await launchUrl(Uri.parse(newUrl))
+      //     : throw 'Could not launch $url';
+      return NavigationActionPolicy.CANCEL;
+    } else if (url.contains('.pdf')) {
       debugPrint("url pdf${url}");
       setState(() {
         newUrl = url;

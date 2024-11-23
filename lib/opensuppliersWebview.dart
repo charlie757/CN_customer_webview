@@ -17,6 +17,7 @@ class _OpenSupplierWebViewState extends State<OpenSupplierWebView> {
   var lastPage = false;
   var newUrl = '';
 
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
