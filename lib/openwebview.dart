@@ -1,7 +1,5 @@
 import 'dart:io';
-import 'package:consumernetworks/opensuppliersWebview.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -312,92 +310,6 @@ class _OpenWebViewState extends State<OpenWebView> {
     } else {
       return NavigationActionPolicy.ALLOW;
     }
-  }
-
-  showPopUp() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Theme(
-            data:
-                Theme.of(context).copyWith(dialogBackgroundColor: Colors.white),
-            child: AlertDialog(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)),
-              // backgroundColor: Colors.white,
-              content: Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Align(
-                        alignment: Alignment.centerRight,
-                        child: Icon(Icons.close),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    customBtn('assets/logo/shopping-cart.gif', 'Purchase', () {
-                      Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => OpenSupplierWebView(
-                                      url:
-                                          'https://www.consumersnetworks.com/products?page=1')))
-                          .then((value) {
-                        SchedulerBinding.instance
-                            .addPostFrameCallback((timeStamp) {
-                          showPopUp();
-                        });
-                      });
-                    }),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    customBtn('assets/logo/real-estate-agent.gif',
-                        'Become a suppliers', () {
-                      Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => OpenSupplierWebView(
-                                      url:
-                                          'https://www.consumersnetworks.com/shop/apply')))
-                          .then((value) {
-                        SchedulerBinding.instance
-                            .addPostFrameCallback((timeStamp) {
-                          showPopUp();
-                        });
-                      });
-                    }),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    customBtn('assets/logo/society.gif', 'Become a members',
-                        () {
-                      Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => OpenSupplierWebView(
-                                      url:
-                                          'https://www.consumersnetworks.com/customer/auth/sign-up')))
-                          .then((value) {
-                        SchedulerBinding.instance
-                            .addPostFrameCallback((timeStamp) {
-                          showPopUp();
-                        });
-                      });
-                    }),
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
   }
 
   customBtn(String img, String title, Function() onTap) {
