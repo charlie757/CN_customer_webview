@@ -52,7 +52,7 @@ class _OpenWebViewState extends State<OpenWebView> {
       iosUrlScheme: 'cn-delivery://',
       appStoreLink:
           'https://apps.apple.com/us/app/cn-delivery/id6535697053',
-      // openStore: false
+      openStore: true
     );
   }
 
