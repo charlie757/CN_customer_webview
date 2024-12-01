@@ -13,11 +13,11 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   List onBoardingList = [
     {
       'image': 'assets/logo/onboarding1.png',
-      'title': 'GANS\nPOR\nCOMPRAR',
+      'title': 'GANAS\nPOR\nCOMPRAR',
     },
     {
       'image': 'assets/logo/onboarding2.png',
-      'title': 'GANS\nPOR\nVENDER',
+      'title': 'GANAS\nPOR\nVENDER',
     },
     {
       'image': 'assets/logo/onboarding3.png',
